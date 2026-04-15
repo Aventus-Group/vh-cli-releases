@@ -1,8 +1,8 @@
 # VibHost CLI
 
-CLI-клиент для платформы [VibHost](https://vibhost.com). Деплой, мониторинг, AI-чат — всё из терминала.
+Command-line client for the [VibHost](https://vibhost.com) platform. Deploy, monitor, and manage web applications — all from your terminal.
 
-## Установка
+## Install
 
 ### macOS (Homebrew)
 
@@ -11,7 +11,7 @@ brew tap Aventus-Group/tap
 brew install vh
 ```
 
-### macOS / Linux (curl)
+### macOS / Linux (one-liner)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Aventus-Group/vh-cli-releases/main/install.sh | sh
@@ -33,16 +33,16 @@ vh version
 go install github.com/Aventus-Group/vh-cli@latest
 ```
 
-### Ручная загрузка
+### Manual download
 
-Бинарники для всех платформ: [Releases](https://github.com/Aventus-Group/vh-cli-releases/releases)
+Pre-built binaries for all platforms: **[Releases](https://github.com/Aventus-Group/vh-cli-releases/releases)**
 
-| Платформа | Файл |
-|-----------|------|
-| macOS Apple Silicon (M1/M2/M3/M4) | `vh-darwin-arm64.tar.gz` |
+| Platform | File |
+|----------|------|
+| macOS Apple Silicon (M1–M4) | `vh-darwin-arm64.tar.gz` |
 | macOS Intel | `vh-darwin-amd64.tar.gz` |
 | Linux x64 | `vh-linux-amd64.tar.gz` |
-| Linux ARM64 (RPi 4+, AWS Graviton) | `vh-linux-arm64.tar.gz` |
+| Linux ARM64 (RPi 4+, Graviton) | `vh-linux-arm64.tar.gz` |
 | Linux ARM (RPi 2/3) | `vh-linux-arm.tar.gz` |
 | Linux 32-bit | `vh-linux-386.tar.gz` |
 | Windows x64 | `vh-windows-amd64.zip` |
@@ -50,26 +50,79 @@ go install github.com/Aventus-Group/vh-cli@latest
 | Windows 32-bit | `vh-windows-386.zip` |
 | FreeBSD x64 | `vh-freebsd-amd64.tar.gz` |
 
-## Быстрый старт
+## Quick start
 
 ```bash
-# Авторизация
+# Log in
 vh auth login
 
-# Проекты
+# List your projects
 vh projects list
 
-# Деплой
+# Deploy from GitHub
 vh deploy https://github.com/your/repo
 
-# AI-чат
-vh chat <project-id> -m "fix nginx"
+# Check deploy status
+vh projects get <project-id>
 
-# JSON вывод (для скриптов)
-vh projects list --json
+# Chat with AI agent
+vh chat <project-id> -m "add SSL certificate"
+
+# View usage
+vh billing usage
 ```
 
-## Обновление
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `vh auth login` | Log in with email & password |
+| `vh auth status` | Show current user, plan, limits |
+| `vh auth logout` | Log out |
+| `vh projects list` | List all projects |
+| `vh projects get <id>` | Project details + deploy steps |
+| `vh projects create --git <url>` | Create project from Git repo |
+| `vh projects delete <id>` | Delete project |
+| `vh deploy <git-url>` | Deploy + real-time progress |
+| `vh deploy --watch <id>` | Watch deployment live |
+| `vh deploy report <id>` | AI deployment report |
+| `vh chat <id> -m "msg"` | Send message to AI agent |
+| `vh chat <id> --history` | Chat history |
+| `vh billing usage` | Usage (deploys, projects, limits) |
+| `vh billing subscription` | Current plan |
+| `vh domains add <id> <domain>` | Attach custom domain |
+| `vh groups list` | List groups |
+
+## Output formats
+
+```bash
+vh projects list                 # table (default)
+vh projects list -o json         # JSON (for scripts & AI agents)
+vh projects list -o quiet        # IDs only (for piping)
+```
+
+## Configuration
+
+```bash
+# Environment variables
+export VH_API_URL=https://api.vibhost.com
+export VH_OUTPUT_FORMAT=json
+
+# Config file
+~/.vibhost/config.yaml
+```
+
+## For AI agents
+
+Works as a tool for Claude Code, Cursor, Copilot, and other AI coding assistants:
+
+```bash
+vh projects list --json          # structured data
+vh deploy <url> --json           # deploy + stream progress
+vh chat <id> -m "fix it" --json  # command AI → get response
+```
+
+## Update
 
 ```bash
 # Homebrew
@@ -79,9 +132,14 @@ brew upgrade vh
 curl -fsSL https://raw.githubusercontent.com/Aventus-Group/vh-cli-releases/main/install.sh | sh
 ```
 
-## Удаление
+## Uninstall
 
 ```bash
 rm /usr/local/bin/vh
 rm -rf ~/.vibhost/
+# or: brew uninstall vh && brew untap Aventus-Group/tap
 ```
+
+## License
+
+MIT
